@@ -19,6 +19,7 @@ export default class AirbnbMainPage extends BasePage {
     private listingRating = '.ru0q88m:not(.fp93bgd .ru0q88m)';
     private guestsInSearchPanel = '[class$="ltr"][data-index="2"] .f16sug5q';
     private nextButton = '[class*="z_8"]';
+    private currentPage = '[aria-current="page"]';
 
 
     public async selectDestination(destination: string): Promise<void> {
@@ -120,8 +121,8 @@ export default class AirbnbMainPage extends BasePage {
         }
 
         if (highestOverallElement) {
-            await this.page.goto(highestOverallPage, {timeout:10000, waitUntil:'networkidle'});
-            let whereAmI = await this.page.locator('[aria-current="page"]').innerText();
+            await this.page.goto(highestOverallPage, {timeout:30000, waitUntil:'networkidle'});
+            let whereAmI = await this.page.locator(this.currentPage).innerText();
             console.log("Im in page: " + whereAmI)
 
 
