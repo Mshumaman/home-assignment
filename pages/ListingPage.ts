@@ -14,6 +14,7 @@ export default class ListingPage extends AirbnbMainPage {
     private reserveButton = '[data-plugin-in-point-id="BOOK_IT_SIDEBAR"] [data-testid="homes-pdp-cta-btn"]';
     private clearDates = '[data-testid="inline-availability-calendar"] [class="_1sl8tba"]';
     private selectedDate = '[aria-label*="Selected"] div';
+    private continueButton = '[data-testid="signup-login-submit-btn"]';
 
 
     public async closePopup() {
@@ -84,7 +85,6 @@ export default class ListingPage extends AirbnbMainPage {
                 await this.validateCheckinDate(formattedCheckInDate);
                 await this.validateCheckoutDate(formattedCheckOutDate);
             }
-
         }
     }
 
@@ -94,5 +94,6 @@ export default class ListingPage extends AirbnbMainPage {
             await this.page.locator(this.closeGuestPanel).click();
         }
         await this.page.locator(this.reserveButton).click();
+        await this.page.locator(this.continueButton).waitFor()
     }
 }

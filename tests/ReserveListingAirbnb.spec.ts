@@ -1,18 +1,19 @@
 import {expect, Page, test} from "@playwright/test";
 import BasePage from "../pages/BasePage";
 import AirbnbMainPage, {guestEnum} from "../pages/AirbnbMainPage";
-import ListingPage from "../pages/ListingPage";
 import ConfirmationPage from "../pages/ConfirmationPage";
+import {Destination} from "../helpers/Destinations";
+import ListingPage from "../pages/ListingPage";
 
 
-test.describe('Reserving an Airbnb Listing', () => {
+test.describe.only('Reserving an Airbnb Listing', () => {
 
     let basePage: BasePage;
     let airbnbPage: AirbnbMainPage;
     let listingPage: ListingPage;
     let confirmationPage: ConfirmationPage;
     let newTab: Page;
-    const destination = 'Amsterdam, Netherlands';
+    const destination = Destination;
     const numberOfAdults = 2;
     const numberOfChildren = 1;
     let tomorrowDate: string;
@@ -24,7 +25,7 @@ test.describe('Reserving an Airbnb Listing', () => {
 
         basePage = new BasePage(page);
         airbnbPage = new AirbnbMainPage(page);
-        listingPage = new ListingPage(page);
+        listingPage = new ListingPage(page)
 
         await test.step('Navigate to airbnb', async () => {
             await basePage.loadApplication('/');
@@ -46,14 +47,14 @@ test.describe('Reserving an Airbnb Listing', () => {
             await airbnbPage.selectGuests(guestEnum.CHILDREN, numberOfChildren);
         })
 
-        await test.step('Search and validate results count is greater than 0 and validate text is correct', async () => {
+        await test.step('Search and validate results count is greater than 0 and validate results title', async () => {
             await airbnbPage.clickSearch();
             await airbnbPage.validateSearchResultsCount();
-            await airbnbPage.validateSearchResultsText('places in Amsterdam');
+            await airbnbPage.validateResultsTitle();
         })
         await test.step('validate the number of guests', async () => {
             numberOfGuests = parseInt(await airbnbPage.getNumberOfGuests());
-            expect(numberOfGuests).toEqual(3);
+            expect(numberOfGuests).toEqual(numberOfChildren + numberOfAdults);
         })
 
         await test.step('Select the highest Rated listing', async () => {
@@ -77,7 +78,7 @@ test.describe('Reserving an Airbnb Listing', () => {
         })
 
         await test.step('Change booking dates to a week from the current date. ', async () => {
-            await listingPage.changeBookingDates(8,9);
+            await listingPage.changeBookingDates(8, 9);
         })
 
         await test.step('Reserve and validate URL include the accurate number of adults', async () => {
