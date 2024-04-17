@@ -14,10 +14,11 @@ export default class ListingPage extends AirbnbMainPage {
     private reserveButton = '[data-plugin-in-point-id="BOOK_IT_SIDEBAR"] [data-testid="homes-pdp-cta-btn"]';
     private clearDates = '[data-testid="inline-availability-calendar"] [class="_1sl8tba"]';
     private selectedDate = '[aria-label*="Selected"] div';
+    private continueButton = '[data-testid="signup-login-submit-btn"]';
 
 
     public async closePopup() {
-        let closePopup = this.page.locator(this.closeTranslationPopup);
+        const closePopup = this.page.locator(this.closeTranslationPopup);
         await closePopup.click();
     }
 
@@ -50,8 +51,8 @@ export default class ListingPage extends AirbnbMainPage {
 
 
     public async changeBookingDates(checkinOffset: number, checkoutOffset: number) {
-        let selectedCheckinDate = await this.page.locator(this.selectedDate).first().getAttribute('data-testid');
-        let selectedCheckoutDate = await this.page.locator(this.selectedDate).last().getAttribute('data-testid');
+        const selectedCheckinDate = await this.page.locator(this.selectedDate).first().getAttribute('data-testid');
+        const selectedCheckoutDate = await this.page.locator(this.selectedDate).last().getAttribute('data-testid');
 
         let nextWeekDate = this.getDate(checkinOffset);
         let nextWeekDatePlusOne = this.getDate(checkoutOffset);
@@ -60,8 +61,8 @@ export default class ListingPage extends AirbnbMainPage {
         const nextWeekDateSwap = this.calendarDate.replace('date', nextWeekDate);
         const nextWeekDatePlusOneSwap = this.calendarDate.replace('date', nextWeekDatePlusOne);
 
-        let isFirstDateBlocked = await this.page.getByTestId(nextWeekDateSwap).getAttribute(isDateAvailableAttribute);
-        let isSecondDateBlocked = await this.page.getByTestId(nextWeekDatePlusOneSwap).getAttribute(isDateAvailableAttribute);
+        const isFirstDateBlocked = await this.page.getByTestId(nextWeekDateSwap).getAttribute(isDateAvailableAttribute);
+        const isSecondDateBlocked = await this.page.getByTestId(nextWeekDatePlusOneSwap).getAttribute(isDateAvailableAttribute);
 
         if (isFirstDateBlocked === "true" || isSecondDateBlocked === "true") {
             console.log("Booking for next week isn't available");
@@ -69,11 +70,13 @@ export default class ListingPage extends AirbnbMainPage {
             // select check-in date
             await this.selectDate(nextWeekDate);
             // check if week plus 1 is blocked. If it does, retain old dates
-            let isCheckoutBlocked = await this.page.getByTestId(nextWeekDatePlusOneSwap).getAttribute(isDateAvailableAttribute);
-            if(isCheckoutBlocked === "true"){
+            const isCheckoutBlocked = await this.page.getByTestId(nextWeekDatePlusOneSwap).getAttribute(isDateAvailableAttribute);
+            const restriction = await this.page.locator(this.checkinOut).innerText();
+            if(isCheckoutBlocked === "true" || restriction === 'Add date'){
                 await this.page.locator(this.clearDates).click();
                 await this.page.getByTestId(selectedCheckinDate).click();
                 await this.page.getByTestId(selectedCheckoutDate).click();
+                console.log("Some dates of next week aren't available. Retain old dates");
             } else {
                 // select check-out date
                 await this.selectDate(nextWeekDatePlusOne);
@@ -84,7 +87,6 @@ export default class ListingPage extends AirbnbMainPage {
                 await this.validateCheckinDate(formattedCheckInDate);
                 await this.validateCheckoutDate(formattedCheckOutDate);
             }
-
         }
     }
 
@@ -94,5 +96,6 @@ export default class ListingPage extends AirbnbMainPage {
             await this.page.locator(this.closeGuestPanel).click();
         }
         await this.page.locator(this.reserveButton).click();
+        await this.page.locator(this.continueButton).waitFor()
     }
 }
