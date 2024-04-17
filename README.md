@@ -9,7 +9,7 @@ In addition, it includes a dedicated section for performance testing using [Arti
 1. **Clone the repository**
    
    ```bash
-   git clone [<repo_url>](https://github.com/Mshumaman/home-assignment.git)
+   git clone (https://github.com/Mshumaman/home-assignment.git)
    ```
 
 2. **Install dependencies**
