@@ -82,13 +82,14 @@ export default class AirbnbMainPage extends BasePage {
         let highestOverallRating = 0;
         let highestOverallElement: Locator;
         let highestOverallPage: string;
+        let highestPagePage: string
 
         while (true) {
             await this.page.locator(this.listingRating).nth(3).waitFor();
             const ratingElements = await this.page.locator(this.listingRating).all();
 
             let highestRating = 0;
-            let highestRatedElement: Locator;
+            let highestRatedElement: Locator = undefined;
 
             for (const element of ratingElements) {
                 const ratingText = await element.innerText();
@@ -97,16 +98,17 @@ export default class AirbnbMainPage extends BasePage {
                 if (rating > highestRating) {
                     highestRatedElement = element;
                     highestRating = rating;
-                    highestOverallPage = this.page.url();
+                    highestPagePage = this.page.url();
                 }
             }
-
-            if (highestRating === 5) break;
 
             if (highestRating > highestOverallRating) {
                 highestOverallRating = highestRating;
                 highestOverallElement = highestRatedElement;
+                highestOverallPage = highestPagePage;
             }
+
+            // if (highestRating === 5) break;
 
             const nextButton = this.page.locator(this.nextButton);
             const isDisabled = await nextButton.isDisabled();
@@ -114,15 +116,17 @@ export default class AirbnbMainPage extends BasePage {
             if (isDisabled) break;
 
             await nextButton.click();
+            await this.page.waitForLoadState('networkidle')
         }
 
         if (highestOverallElement) {
-            // Navigate back to the page with the highest rated element
             await this.page.goto(highestOverallPage, {timeout:10000, waitUntil:'networkidle'});
+            let whereAmI = await this.page.locator('[aria-current="page"]').innerText();
+            console.log("Im in page: " + whereAmI)
 
-            // Click on the highest rated element
+
             const newTab = this.page.waitForEvent('popup');
-            await highestOverallElement.first().click({force: true});
+            await highestOverallElement.click({force: true});
             const popup = await newTab;
             await popup.waitForLoadState();
             return popup;

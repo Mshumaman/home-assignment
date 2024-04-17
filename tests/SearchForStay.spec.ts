@@ -2,6 +2,7 @@ import {expect, test} from "@playwright/test";
 import BasePage from "../pages/BasePage";
 import AirbnbMainPage, {guestEnum} from "../pages/AirbnbMainPage";
 import {Destination} from "../helpers/Destinations";
+import {AIRBNB_BASE_URL} from "../helpers/Environment";
 
 
 test.describe('Search for a stay', () => {
@@ -22,7 +23,7 @@ test.describe('Search for a stay', () => {
         airbnbPage = new AirbnbMainPage(page);
 
         await test.step('Navigate to airbnb', async () => {
-            await basePage.loadApplication('/');
+            await basePage.loadApplication(AIRBNB_BASE_URL);
 
         })
         await test.step(`Select destination: ${destination} `, async () => {

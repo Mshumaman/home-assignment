@@ -4,9 +4,10 @@ import AirbnbMainPage, {guestEnum} from "../pages/AirbnbMainPage";
 import ConfirmationPage from "../pages/ConfirmationPage";
 import {Destination} from "../helpers/Destinations";
 import ListingPage from "../pages/ListingPage";
+import {AIRBNB_BASE_URL} from "../helpers/Environment";
 
 
-test.describe.only('Reserving an Airbnb Listing', () => {
+test.describe('Reserving an Airbnb Listing', () => {
 
     let basePage: BasePage;
     let airbnbPage: AirbnbMainPage;
@@ -28,7 +29,7 @@ test.describe.only('Reserving an Airbnb Listing', () => {
         listingPage = new ListingPage(page)
 
         await test.step('Navigate to airbnb', async () => {
-            await basePage.loadApplication('/');
+            await basePage.loadApplication(AIRBNB_BASE_URL);
 
         })
         await test.step(`Select destination: ${destination} `, async () => {
