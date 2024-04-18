@@ -15,14 +15,14 @@ export default defineConfig({
             name: 'Google Chrome',
             use: {...devices['Desktop Chrome'], channel: 'chrome'},
         },
-        {
-            name: 'Microsoft Edge',
-            use: {...devices['Desktop Edge'], channel: 'msedge'},
-        },
-        {
-            name: 'firefox',
-            use: {...devices['Desktop Firefox']},
-        },
+        // {
+        //     name: 'Microsoft Edge',
+        //     use: {...devices['Desktop Edge'], channel: 'msedge'},
+        // },
+        // {
+        //     name: 'firefox',
+        //     use: {...devices['Desktop Firefox']},
+        // },
     ],
     use: {
         viewport: {width: 1920, height: 1080},

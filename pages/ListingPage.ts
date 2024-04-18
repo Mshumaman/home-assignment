@@ -18,8 +18,12 @@ export default class ListingPage extends AirbnbMainPage {
 
 
     public async closePopup() {
+        await this.page.waitForLoadState('networkidle')
         const closePopup = this.page.locator(this.closeTranslationPopup);
-        await closePopup.click();
+        if(await closePopup.isVisible()){
+            await closePopup.click();
+        }
+
     }
 
     public async validateCheckinDate(checkinDate: string) {

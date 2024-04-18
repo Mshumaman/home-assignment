@@ -86,7 +86,8 @@ export default class AirbnbMainPage extends BasePage {
         let highestPagePage: string
 
         while (true) {
-            await this.page.locator(this.listingRating).nth(3).waitFor();
+            // await this.page.locator(this.listingRating).nth(3).waitFor();
+            await this.page.waitForLoadState('networkidle')
             const ratingElements = await this.page.locator(this.listingRating).all();
 
             let highestRating = 0;
