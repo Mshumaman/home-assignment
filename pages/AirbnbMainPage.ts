@@ -86,6 +86,8 @@ export default class AirbnbMainPage extends BasePage {
         let highestPagePage: string
 
         while (true) {
+            let whereAmI = await this.page.locator(this.currentPage).innerText();
+            console.log("Im in page: " + whereAmI)
             // await this.page.locator(this.listingRating).nth(3).waitFor();
             await this.page.waitForLoadState('networkidle')
             const ratingElements = await this.page.locator(this.listingRating).all();
@@ -124,7 +126,7 @@ export default class AirbnbMainPage extends BasePage {
         if (highestOverallElement) {
             await this.page.goto(highestOverallPage, {timeout:30000, waitUntil:'networkidle'});
             let whereAmI = await this.page.locator(this.currentPage).innerText();
-            console.log("Im in page: " + whereAmI)
+            console.log("Highest rating listing is in page: " + whereAmI)
 
 
             const newTab = this.page.waitForEvent('popup');
