@@ -75,7 +75,7 @@ export default class ListingPage extends AirbnbMainPage {
             await this.selectDate(nextWeekDate);
             // check if week plus 1 is blocked. If it does, retain old dates
             const isCheckoutBlocked = await this.page.getByTestId(nextWeekDatePlusOneSwap).getAttribute(isDateAvailableAttribute);
-            const restriction = await this.page.locator(this.checkinOut).innerText();
+            const restriction = await this.page.locator(this.checkinDate).innerText();
             if(isCheckoutBlocked === "true" || restriction === 'Add date'){
                 await this.page.locator(this.clearDates).click();
                 await this.page.getByTestId(selectedCheckinDate).click();
@@ -90,6 +90,7 @@ export default class ListingPage extends AirbnbMainPage {
                 // Validate new dates selected and displayed
                 await this.validateCheckinDate(formattedCheckInDate);
                 await this.validateCheckoutDate(formattedCheckOutDate);
+                console.log("rescheduled to next week dates");
             }
         }
     }

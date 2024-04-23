@@ -58,7 +58,7 @@ export default class BasePage {
         let parsedDate = new Date(dateString);
         return parsedDate.toLocaleDateString('en-US', {
             month: 'numeric',
-            day: '2-digit',
+            day: 'numeric',
             year: 'numeric'
         });
     }
