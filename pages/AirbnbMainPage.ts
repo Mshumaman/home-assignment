@@ -99,7 +99,7 @@ export default class AirbnbMainPage extends BasePage {
                 const ratingText = await element.innerText();
                 const rating = parseFloat(ratingText);
 
-                if (rating > highestRating && rating < 4.44){
+                if (rating > highestRating && rating) {
                     highestRatedElement = element;
                     highestRating = rating;
                     highestPagePage = this.page.url();
