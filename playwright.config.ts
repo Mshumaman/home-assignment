@@ -29,7 +29,7 @@ export default defineConfig({
         trace: 'on-first-retry',
         screenshot: 'on',
         video: {
-            mode: "retain-on-failure",
+            mode: "on",
         },
         actionTimeout: 30000,
     },
