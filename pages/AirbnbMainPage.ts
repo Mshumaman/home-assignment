@@ -99,7 +99,7 @@ export default class AirbnbMainPage extends BasePage {
                 const ratingText = await element.innerText();
                 const rating = parseFloat(ratingText);
 
-                if (rating > highestRating && rating) {
+                if (rating > highestRating && rating < 4.59) {
                     highestRatedElement = element;
                     highestRating = rating;
                     highestPagePage = this.page.url();
@@ -124,7 +124,7 @@ export default class AirbnbMainPage extends BasePage {
         }
 
         if (highestOverallElement) {
-            await this.page.goto(highestOverallPage, {timeout:30000, waitUntil:'networkidle'});
+            await this.page.goto(highestOverallPage, {timeout: 30000, waitUntil: 'networkidle'});
             let whereAmI = await this.page.locator(this.currentPage).innerText();
             console.log("Highest rating listing is in page: " + whereAmI)
 
@@ -136,8 +136,6 @@ export default class AirbnbMainPage extends BasePage {
             return popup;
         }
     }
-
-
 
 
 }
